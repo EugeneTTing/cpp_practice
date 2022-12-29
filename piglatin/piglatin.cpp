@@ -59,14 +59,24 @@ void translateWord(const char *english, char *piglatin)
 
 void translateStream(std::istream &in, std::ostream &out)
 {
-    char english_word[64];
-    char piglatin_word[66];
+    char english_word[64], piglatin_word[66], ch;
 
     if (in.eof())
+    {
+        out << '\0';
         return;
+    }
 
     in >> english_word;
+
     translateWord(english_word, piglatin_word);
-    out << piglatin_word << ' ';
+    out << piglatin_word;
+
+    in.get(ch);
+
+    while (isspace(in.peek()))
+        in.get(ch);
+
+    out << ch;
     translateStream(in, out);
 }
